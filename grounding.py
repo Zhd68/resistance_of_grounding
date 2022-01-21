@@ -1,6 +1,6 @@
 class HorizontalGroundingElectrode:
     '''
-    Класс VerticalGroundingElectrodes используется для получения значения
+    Класс VerticalGroundingElectrode используется для получения значения
     сопротивления растеканию тока одиночного горизонтального заземлителя
     длиной 5 метров 
     '''
@@ -32,7 +32,32 @@ class HorizontalGroundingElectrode:
 
 
 class VerticalGroundingElectrode:
-    pass
+    '''
+    Класс VerticalGroundingElectrode используется для получения значения
+    сопротивления растеканию тока одиночного вертикального заземлителя
+    длиной 4.5 метров 
+    '''
+
+    LENGHT_OF_ROD = float(4.5)
+    
+    def __init__(self, depth_of_rod, diameter_of_rod):
+        #глубина указывается от поверхности до центра стержня
+        self.depth_of_rod = depth_of_rod
+        self.diameter_of_rod = diameter_of_rod
+        self.soil_resistance = None
+
+    def add_soil(self, soil_resistance):
+        '''Добавляет удельное электрическое споротивление грунта'''
+        self.soil_resistance = soil.Soil(soil_resistance).get_soil_resistance()
+
+    def resistance_v_electrode(self):
+        '''Сопротивление растеканию тока одиночного вертикального заземлителя'''
+        from math import pi, log, sqrt
+        resistance = (self.soil_resistance / (2 * pi * self.LENGHT_OF_ROD)) * \
+            (log(2 * self.LENGHT_OF_ROD / self.diameter_of_rod) \
+                + 0.5 * log((4 * self.depth_of_rod + self.LENGHT_OF_ROD) \
+                    / (4 * self.depth_of_rod - self.LENGHT_OF_ROD)))
+        return resistance
 
 class GroundingDevice:
     pass
