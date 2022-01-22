@@ -1,3 +1,5 @@
+import soil
+
 class HorizontalGroundingElectrode:
     '''
     Класс VerticalGroundingElectrode используется для получения значения
